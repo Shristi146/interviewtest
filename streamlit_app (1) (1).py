@@ -36,6 +36,8 @@ if uploaded_video is not None:
     if st.button("Analyze Interview"):
         with st.spinner("Analyzing... this can take a minute or two on first run"):
 
+            st.info("🎵 Extracting audio...")
+
             # --- Extract audio from video ---
             audio_path = video_path.replace(".mp4", ".mp3")
             subprocess.run(
@@ -43,13 +45,19 @@ if uploaded_video is not None:
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
             )
 
+            st.info("🗣️ Converting speech to text...")
+
             # --- Module 2: Speech-to-text ---
             whisper_model = load_whisper()
             transcript = whisper_model.transcribe(audio_path)["text"].strip()
 
+            st.info("📝 Analyzing transcript...")
+
             # --- Module 3: Text analysis ---
             classifier = load_sentiment()
             sentiment = classifier(transcript)
+
+            st.info("😊 Analyzing facial expressions...")
 
             filler_words = ["um", "uh", "like", "you know", "actually", "basically", "literally"]
             transcript_lower = transcript.lower()
