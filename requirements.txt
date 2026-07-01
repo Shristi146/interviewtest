@@ -2,7 +2,7 @@
 streamlit
 opencv-python-headless
 openai-whisper
-transformers
+transformers==4.44.2
 torch
 deepface
 librosa
