@@ -53,7 +53,7 @@ if uploaded_video is not None:
             whisper_model = load_whisper()
             transcript = whisper_model.transcribe(audio_path)["text"].strip()
 
-            st.info("📝 Analyzing transcript...")
+            status.info("📝 Analyzing transcript...")
 
             # --- Module 3: Text analysis ---
             classifier = load_sentiment()
