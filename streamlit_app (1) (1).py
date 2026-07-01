@@ -48,7 +48,7 @@ if uploaded_video is not None:
             transcript = whisper_model.transcribe(audio_path)["text"].strip()
 
             # --- Module 3: Text analysis ---
-            classifier = load_sentiment()
+            classifier = load_classifier()
             sentiment = classifier(transcript)
 
             filler_words = ["um", "uh", "like", "you know", "actually", "basically", "literally"]
