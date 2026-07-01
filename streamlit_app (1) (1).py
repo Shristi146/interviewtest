@@ -45,7 +45,7 @@ if uploaded_video is not None:
             transcript_lower = transcript.lower()
             filler_result = {w: transcript_lower.count(w) for w in filler_words if transcript_lower.count(w) > 0}
 
-    nlp = spacy.load("en_core_web_sm")
+            nlp = spacy.load("en_core_web_sm")
             doc = nlp(transcript)
             keywords = [t.text for t in doc if t.pos_ in ["NOUN", "PROPN"]]
 
