@@ -9,7 +9,17 @@ from collections import Counter
 import tempfile
 import subprocess
 import os
+@st.cache_resource
+def load_whisper():
+    return whisper.load_model("tiny")
 
+@st.cache_resource
+def load_sentiment():
+    return pipeline("sentiment-analysis")
+
+@st.cache_resource
+def load_spacy():
+    return spacy.load("en_core_web_sm")
 st.set_page_config(page_title="Interview Assessment System", page_icon="🎤", layout="centered")
 
 st.title("🎤 Multimodal Interview Assessment System")
@@ -34,18 +44,18 @@ if uploaded_video is not None:
             )
 
             # --- Module 2: Speech-to-text ---
-            whisper_model = whisper.load_model("base")
+            whisper_model = load_model()
             transcript = whisper_model.transcribe(audio_path)["text"].strip()
 
             # --- Module 3: Text analysis ---
-            classifier = pipeline("sentiment-analysis")
+            classifier = load_sentiment()
             sentiment = classifier(transcript)
 
             filler_words = ["um", "uh", "like", "you know", "actually", "basically", "literally"]
             transcript_lower = transcript.lower()
             filler_result = {w: transcript_lower.count(w) for w in filler_words if transcript_lower.count(w) > 0}
 
-            nlp = spacy.load("en_core_web_sm")
+            nlp = load_spacy()
             doc = nlp(transcript)
             keywords = [t.text for t in doc if t.pos_ in ["NOUN", "PROPN"]]
 
