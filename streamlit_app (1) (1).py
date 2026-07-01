@@ -44,7 +44,7 @@ if uploaded_video is not None:
             )
 
             # --- Module 2: Speech-to-text ---
-            whisper_model = load_model()
+            whisper_model = load_whisper()
             transcript = whisper_model.transcribe(audio_path)["text"].strip()
 
             # --- Module 3: Text analysis ---
