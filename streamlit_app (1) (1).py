@@ -36,7 +36,9 @@ if uploaded_video is not None:
     if st.button("Analyze Interview"):
         with st.spinner("Analyzing... this can take a minute or two on first run"):
 
-            st.info("🎵 Extracting audio...")
+            status = st.empty()
+
+            status.info("🎵 Extracting audio...")
 
             # --- Extract audio from video ---
             audio_path = video_path.replace(".mp4", ".mp3")
@@ -45,7 +47,7 @@ if uploaded_video is not None:
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
             )
 
-            st.info("🗣️ Converting speech to text...")
+            status.info("🗣️ Converting speech to text...")
 
             # --- Module 2: Speech-to-text ---
             whisper_model = load_whisper()
@@ -57,7 +59,7 @@ if uploaded_video is not None:
             classifier = load_sentiment()
             sentiment = classifier(transcript)
 
-            st.info("😊 Analyzing facial expressions...")
+            status.info("😊 Analyzing facial expressions...")
 
             filler_words = ["um", "uh", "like", "you know", "actually", "basically", "literally"]
             transcript_lower = transcript.lower()
@@ -96,6 +98,10 @@ if uploaded_video is not None:
 
             emotion_counts = Counter(emotions_list)
             total_frames = len(emotions_list) if emotions_list else 1
+
+            status.info("📊 Calculating final score...")
+
+            status.success("✅ Analysis completed!")
 
             # --- Module 5: Final weighted score ---
             positive_emotions = emotion_counts.get("happy", 0) + emotion_counts.get("neutral", 0)
