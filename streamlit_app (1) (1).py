@@ -190,8 +190,8 @@ if uploaded_video is not None:
                         if confidence > 60:
                             emotions_list.append(dominant)
 
-                        except Exception:
-                           pass
+                    except Exception:
+                         pass
 
                     i += 1
 
