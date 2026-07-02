@@ -6,7 +6,7 @@ import streamlit as st
 import cv2
 import whisper
 from deepface import DeepFace
-from transformers import pipeline
+from textblob import TextBlob
 import spacy
 import librosa
 from collections import Counter
@@ -142,9 +142,12 @@ if uploaded_video is not None:
             status.info("📝 Analyzing transcript...")
 
             # --- Module 3: Text analysis ---
-            classifier = load_sentiment()
-            sentiment = classifier(transcript)
+            polarity = TextBlob(transcript).sentiment.polarity
 
+            if polarity >= 0:
+                sentiment = [{"label": "POSITIVE", "score": polarity}]
+            else:
+                sentiment = [{"label": "NEGATIVE", "score": abs(polarity)}]
             filler_words = ["um", "uh", "like", "you know", "actually", "basically", "literally"]
             transcript_lower = transcript.lower()
             filler_result = {w: transcript_lower.count(w) for w in filler_words if transcript_lower.count(w) > 0}
