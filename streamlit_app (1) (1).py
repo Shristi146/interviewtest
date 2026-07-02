@@ -21,10 +21,6 @@ def load_whisper():
     return whisper.load_model("tiny")
 
 @st.cache_resource
-def load_sentiment():
-    return pipeline("sentiment-analysis")
-
-@st.cache_resource
 def load_spacy():
     return spacy.load("en_core_web_sm")
 
