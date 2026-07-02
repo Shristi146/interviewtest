@@ -1,3 +1,6 @@
+# Multimodal Interview Assessment System
+# Author: Shrishti
+# GitHub: github.com/shristi146/interviewtest
 import streamlit as st
 import cv2
 import whisper
