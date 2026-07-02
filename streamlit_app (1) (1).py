@@ -167,39 +167,35 @@ if uploaded_video is not None:
 
             # --- Module 1: Facial emotion (with bias reduction) ---
 
-cap = cv2.VideoCapture(video_path)
-emotions_list = []
-i = 0
+            cap = cv2.VideoCapture(video_path)
+            emotions_list = []
+            i = 0
 
-while True:
-    ok, frame = cap.read()
+            while True:
+                ok, frame = cap.read()
 
-    if not ok:
-        break
+                if not ok:
+                    break
 
-    if i % 60 == 0:  # analyze only every 60th frame
-        try:
-            frame = normalize_frame(frame)
+                if i % 60 == 0:  # analyze only every 60th frame
+                    try:
+                        frame = normalize_frame(frame)
 
-            r = DeepFace.analyze(
-                frame,
-                actions=["emotion"],
-                enforce_detection=False
-            )
+                        r = DeepFace.analyze(frame, actions=["emotion"], enforce_detection=False)
 
-            emotion_scores = r[0]["emotion"]
-            dominant = r[0]["dominant_emotion"]
-            confidence = emotion_scores[dominant]
+                        emotion_scores = r[0]["emotion"]
+                        dominant = r[0]["dominant_emotion"]
+                        confidence = emotion_scores[dominant]
 
-            if confidence > 60:
-                emotions_list.append(dominant)
+                        if confidence > 60:
+                            emotions_list.append(dominant)
 
-        except Exception:
-            pass
+                        except Exception:
+                           pass
 
-    i += 1
+                    i += 1
 
-cap.release()
+                cap.release()
                 
             emotion_counts = Counter(emotions_list)
             total_frames = len(emotions_list) if emotions_list else 1
